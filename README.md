@@ -1,2 +1,5 @@
 # InteligenciaArtificial
 Asignatura InteligenciaArtificial
+
+Ejercicios InteligenciaArtificial
+https://github.com/jramisDev/InteligenciaArtificial.git
