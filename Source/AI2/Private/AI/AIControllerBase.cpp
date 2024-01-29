@@ -61,10 +61,11 @@ void AAIControllerBase::OnMoveCompleted(FAIRequestID RequestID, const FPathFollo
 	}
 }
 
-void AAIControllerBase::MoveFinished(FAIRequestID FaiRequestID, const FPathFollowingResult& PathFollowingResult)
+void AAIControllerBase::MoveFinished(FAIRequestID FaiRequestID, const FPathFollowingResult& PathFollowingResult) const
 {
-
+		if(ANPCBase* NPC = Cast<ANPCBase>(GetCharacter()))
+		{
+			NPC->bIsMoving = false;
+		}
 		GetPathFollowingComponent()->OnRequestFinished.RemoveAll(this);
-		
-	
 }

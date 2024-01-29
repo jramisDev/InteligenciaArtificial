@@ -9,12 +9,14 @@ UCLASS()
 class AI2_API ANPCBase : public ACharacter
 {
 	GENERATED_BODY()
-
+	
 public:
 	ANPCBase();
 
 	UPROPERTY(EditInstanceOnly)
 	AActor* ReferenceActor;
+	
+	bool bIsMoving = false;
 
 protected:
 	virtual void BeginPlay() override;

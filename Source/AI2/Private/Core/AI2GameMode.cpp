@@ -2,7 +2,6 @@
 
 #include "Core/AI2GameMode.h"
 #include "Core/AI2PlayerController.h"
-#include "Core/AI2Character.h"
 #include "UObject/ConstructorHelpers.h"
 
 AAI2GameMode::AAI2GameMode()

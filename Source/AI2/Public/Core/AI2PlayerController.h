@@ -8,6 +8,7 @@
 #include "InputActionValue.h"
 #include "AI2PlayerController.generated.h"
 
+class ANPCBase;
 /** Forward declaration to improve compiling times */
 class UNiagaraSystem;
 
@@ -39,6 +40,27 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* SetDestinationTouchAction;
 
+
+	//RTS
+
+	/** MappingContext */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=InputRTS, meta=(AllowPrivateAccess = "true"))
+	class UInputMappingContext* RTSMappingContext;
+	
+	/** Select NPC Input Action **/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=InputRTS, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* SelectAction;
+
+	/** Order NPC Input Action **/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=InputRTS, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* OrderAction;
+
+	/**
+	 * Array with NPCsBase Selected
+	 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=InputRTS, meta=(AllowPrivateAccess = "true"))
+	TArray<ANPCBase*> NPCArray;
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -55,6 +77,8 @@ protected:
 	void OnTouchTriggered();
 	void OnTouchReleased();
 
+	void SelectNPC();
+	void OrderNPC();
 private:
 	FVector CachedDestination;
 

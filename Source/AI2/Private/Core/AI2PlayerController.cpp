@@ -3,12 +3,11 @@
 #include "Core/AI2PlayerController.h"
 #include "GameFramework/Pawn.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
-#include "NiagaraSystem.h"
 #include "NiagaraFunctionLibrary.h"
-#include "Core/AI2Character.h"
 #include "Engine/World.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "AI/NPCBase.h"
 
 AAI2PlayerController::AAI2PlayerController()
 {
@@ -26,7 +25,7 @@ void AAI2PlayerController::BeginPlay()
 	//Add Input Mapping Context
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
-		Subsystem->AddMappingContext(DefaultMappingContext, 0);
+		Subsystem->AddMappingContext(RTSMappingContext, 0);
 	}
 }
 
@@ -49,6 +48,10 @@ void AAI2PlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &AAI2PlayerController::OnTouchTriggered);
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &AAI2PlayerController::OnTouchReleased);
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &AAI2PlayerController::OnTouchReleased);
+
+		//RTS inputs
+		EnhancedInputComponent->BindAction(SelectAction, ETriggerEvent::Started, this, &AAI2PlayerController::SelectNPC);
+		EnhancedInputComponent->BindAction(OrderAction, ETriggerEvent::Started, this, &AAI2PlayerController::OrderNPC);
 	}
 }
 
@@ -114,4 +117,48 @@ void AAI2PlayerController::OnTouchReleased()
 {
 	bIsTouch = false;
 	OnSetDestinationReleased();
+}
+
+void AAI2PlayerController::SelectNPC()
+{
+	FHitResult Hit;
+	
+	if (!GetHitResultUnderCursor(ECollisionChannel::ECC_Camera, true, Hit)) return;
+	
+	if(ANPCBase* NPC = Cast<ANPCBase>(Hit.GetActor()))
+	{
+		if(!NPCArray.Contains(NPC))
+			NPCArray.Add(NPC);
+		else
+			NPCArray.Remove(NPC);
+	}
+}
+
+void AAI2PlayerController::OrderNPC()
+{
+	FHitResult Hit;
+	
+	if (!GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit)) return;
+
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+		this,
+		FXCursor,
+		Hit.Location,
+		FRotator::ZeroRotator,
+		FVector(1.f, 1.f, 1.f),
+		true,
+		true,
+		ENCPoolMethod::None,
+		true);
+	
+	for(ANPCBase* NPC : NPCArray)
+	{
+		if(NPC->bIsMoving) continue;
+		
+		if(AAIControllerBase* Controller = Cast<AAIControllerBase>(NPC->GetController()))
+		{
+			NPC->bIsMoving = true;
+			Controller->SetMoveCommand(Hit.Location);
+		}
+	}
 }
