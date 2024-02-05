@@ -22,4 +22,6 @@ AAI2GameMode::AAI2GameMode()
 	{
 		PlayerControllerClass = PlayerControllerBPClass.Class;
 	}
+
+	
 }

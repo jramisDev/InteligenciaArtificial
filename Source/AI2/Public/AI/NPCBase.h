@@ -5,6 +5,9 @@
 #include "GameFramework/Character.h"
 #include "NPCBase.generated.h"
 
+class UNiagaraSystem;
+class UNiagaraComponent;
+
 UCLASS()
 class AI2_API ANPCBase : public ACharacter
 {
@@ -15,8 +18,6 @@ public:
 
 	UPROPERTY(EditInstanceOnly)
 	AActor* ReferenceActor;
-	
-	bool bIsMoving = false;
 
 protected:
 	virtual void BeginPlay() override;

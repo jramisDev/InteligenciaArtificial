@@ -13,6 +13,7 @@ public:
 	AAIControllerBase();
 
 	void SetMoveCommand(const FVector& InGoal);
+	void SetMoveCommand(const FVector& InGoal, bool bAbortMovement);
 	
 protected:
 	virtual void BeginPlay() override;

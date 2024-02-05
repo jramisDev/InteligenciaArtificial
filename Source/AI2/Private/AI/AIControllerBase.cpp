@@ -17,6 +17,8 @@ void AAIControllerBase::BeginPlay()
 
 void AAIControllerBase::SetMoveCommand(const FVector& InGoal)
 {
+	if(GetCharacter()->GetVelocity().Length() > 0) return;
+		
 	if(GetCharacter())
 	{
 		FAIMoveRequest MoveRequest;
@@ -32,6 +34,14 @@ void AAIControllerBase::SetMoveCommand(const FVector& InGoal)
 
 		GetPathFollowingComponent()->OnRequestFinished.AddUObject(this, &ThisClass::MoveFinished);
 	}
+}
+
+void AAIControllerBase::SetMoveCommand(const FVector& InGoal, bool bAbortMovement)
+{
+
+	if(bAbortMovement) GetPathFollowingComponent()->AbortMove(*this,FPathFollowingResultFlags::UserAbort);
+	
+	SetMoveCommand(InGoal);
 }
 
 void AAIControllerBase::OnPossess(APawn* InPawn)
@@ -63,9 +73,5 @@ void AAIControllerBase::OnMoveCompleted(FAIRequestID RequestID, const FPathFollo
 
 void AAIControllerBase::MoveFinished(FAIRequestID FaiRequestID, const FPathFollowingResult& PathFollowingResult) const
 {
-		if(ANPCBase* NPC = Cast<ANPCBase>(GetCharacter()))
-		{
-			NPC->bIsMoving = false;
-		}
 		GetPathFollowingComponent()->OnRequestFinished.RemoveAll(this);
 }

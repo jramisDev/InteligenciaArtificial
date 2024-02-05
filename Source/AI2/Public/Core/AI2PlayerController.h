@@ -8,6 +8,7 @@
 #include "InputActionValue.h"
 #include "AI2PlayerController.generated.h"
 
+class AHUD_RTS;
 class ANPCBase;
 /** Forward declaration to improve compiling times */
 class UNiagaraSystem;
@@ -61,9 +62,13 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=InputRTS, meta=(AllowPrivateAccess = "true"))
 	TArray<ANPCBase*> NPCArray;
 
+
+	AHUD_RTS* HudRTS;
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
+
 
 	virtual void SetupInputComponent() override;
 	
@@ -78,6 +83,8 @@ protected:
 	void OnTouchReleased();
 
 	void SelectNPC();
+	void SelectedBoxNPC(const FInputActionValue& InputActionValue);
+	void DeSelectedBoxNPC();
 	void OrderNPC();
 private:
 	FVector CachedDestination;

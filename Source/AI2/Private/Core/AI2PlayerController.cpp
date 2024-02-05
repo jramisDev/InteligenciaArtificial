@@ -8,6 +8,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "AI/NPCBase.h"
+#include "UI/HUD_RTS.h"
 
 AAI2PlayerController::AAI2PlayerController()
 {
@@ -27,6 +28,8 @@ void AAI2PlayerController::BeginPlay()
 	{
 		Subsystem->AddMappingContext(RTSMappingContext, 0);
 	}
+
+	HudRTS = Cast<AHUD_RTS>(GetHUD());
 }
 
 void AAI2PlayerController::SetupInputComponent()
@@ -51,7 +54,14 @@ void AAI2PlayerController::SetupInputComponent()
 
 		//RTS inputs
 		EnhancedInputComponent->BindAction(SelectAction, ETriggerEvent::Started, this, &AAI2PlayerController::SelectNPC);
+		//EnhancedInputComponent->BindAction(SelectAction, ETriggerEvent::Started, this, &AAI2PlayerController::SelectedBoxNPC);
+		//EnhancedInputComponent->BindAction(SelectAction, ETriggerEvent::Completed, this, &AAI2PlayerController::DeSelectedBoxNPC);
+		
 		EnhancedInputComponent->BindAction(OrderAction, ETriggerEvent::Started, this, &AAI2PlayerController::OrderNPC);
+
+
+
+		
 	}
 }
 
@@ -121,6 +131,9 @@ void AAI2PlayerController::OnTouchReleased()
 
 void AAI2PlayerController::SelectNPC()
 {
+
+	GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Yellow, TEXT("SelectNPC!"));
+	
 	FHitResult Hit;
 	
 	if (!GetHitResultUnderCursor(ECollisionChannel::ECC_Camera, true, Hit)) return;
@@ -132,6 +145,24 @@ void AAI2PlayerController::SelectNPC()
 		else
 			NPCArray.Remove(NPC);
 	}
+}
+
+void AAI2PlayerController::SelectedBoxNPC(const FInputActionValue& InputActionValue)
+{
+	HudRTS->InitialPointSelection = HudRTS->GetMousePos2D();
+
+	// if(HudRTS->bStartSelecting)
+	// 	HudRTS->bStartSelecting = false;
+	// else	
+	// 	HudRTS->bStartSelecting = true;	
+
+
+	
+}
+
+void AAI2PlayerController::DeSelectedBoxNPC()
+{
+	//HudRTS->bStartSelecting = false;
 }
 
 void AAI2PlayerController::OrderNPC()
@@ -153,12 +184,9 @@ void AAI2PlayerController::OrderNPC()
 	
 	for(ANPCBase* NPC : NPCArray)
 	{
-		if(NPC->bIsMoving) continue;
-		
 		if(AAIControllerBase* Controller = Cast<AAIControllerBase>(NPC->GetController()))
 		{
-			NPC->bIsMoving = true;
-			Controller->SetMoveCommand(Hit.Location);
+			Controller->SetMoveCommand(Hit.Location, true);
 		}
 	}
 }
