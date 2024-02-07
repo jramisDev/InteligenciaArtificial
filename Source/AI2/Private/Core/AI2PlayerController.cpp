@@ -186,7 +186,7 @@ void AAI2PlayerController::OrderNPC()
 	{
 		if(AAIControllerBase* Controller = Cast<AAIControllerBase>(NPC->GetController()))
 		{
-			Controller->SetMoveCommand(Hit.Location, true);
+			Controller->SetMoveCommand(Hit.Location);
 		}
 	}
 }
