@@ -9,7 +9,7 @@ class UNiagaraSystem;
 class UNiagaraComponent;
 
 UCLASS()
-class AI2_API ANPCBase : public ACharacter
+class AI2_API ANPCBase : public ACharacter, public IAIMovementInterface
 {
 	GENERATED_BODY()
 	
@@ -19,8 +19,7 @@ public:
 	UPROPERTY(EditInstanceOnly)
 	AActor* ReferenceActor;
 
-protected:
-	virtual void BeginPlay() override;
-
-	AAIControllerBase* AIControllerBase;
+public:
+	virtual void StopMovement_Implementation() override;
+	virtual void ResumeMovement_Implementation() override;
 };

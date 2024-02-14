@@ -9,11 +9,6 @@ AAIControllerBase::AAIControllerBase()
 	
 }
 
-void AAIControllerBase::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
 
 void AAIControllerBase::SetMoveCommand(const FVector& InGoal)
 {
@@ -43,6 +38,19 @@ void AAIControllerBase::SetMoveCommand(const FVector& InGoal, bool bAbortMovemen
 	
 	SetMoveCommand(InGoal);
 }
+
+void AAIControllerBase::ResumeMovement_Implementation()
+{
+	ensure(GetPathFollowingComponent());
+	GetPathFollowingComponent()->ResumeMove();
+}
+
+void AAIControllerBase::StopMovement_Implementation()
+{
+	ensure(GetPathFollowingComponent());
+	GetPathFollowingComponent()->PauseMove();
+}
+
 
 void AAIControllerBase::OnPossess(APawn* InPawn)
 {

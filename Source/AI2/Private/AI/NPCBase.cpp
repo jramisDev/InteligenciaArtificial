@@ -13,8 +13,19 @@ ANPCBase::ANPCBase()
 	// NiagaraNPCSelected = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraSelected"));
 }
 
-void ANPCBase::BeginPlay()
+
+void ANPCBase::StopMovement_Implementation()
 {
-	Super::BeginPlay();
-	
+	if(GetController() && GetController()->Implements<UAIMovementInterface>())
+	{
+		IAIMovementInterface::Execute_StopMovement(GetController());
+	}
+}
+
+void ANPCBase::ResumeMovement_Implementation()
+{
+	if(GetController() && GetController()->Implements<UAIMovementInterface>())
+	{
+		IAIMovementInterface::Execute_ResumeMovement(GetController());
+	}
 }
