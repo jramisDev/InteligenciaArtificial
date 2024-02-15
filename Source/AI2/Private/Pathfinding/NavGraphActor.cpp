@@ -14,6 +14,8 @@ void ANavGraphActor::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
 
+	if(!bRunConstruction) return;
+
 	for (auto GraphNode: GraphNodes)
 	{
 		if(GraphNode)
@@ -36,13 +38,25 @@ void ANavGraphActor::OnConstruction(const FTransform& Transform)
 			Node->RegisterComponent();			
 			Node->SetRelativeLocation({i * DistanceBetweenNodes, j * DistanceBetweenNodes, 0});
 
-			if(Visualizer) Node->SetStaticMesh(Visualizer);
+			if(Visualizer) {
+				Node->SetStaticMesh(Visualizer);
+
+				if (Cell_SelectedState &&
+					SelectedCellIndexes.Contains(FVector2D{static_cast<double>(i),static_cast<double>(j)}))
+				{
+					Node->SetMaterial(0,Cell_SelectedState);
+				}
+			}
 
 			GraphNodes.Add(Node);
 		}
 	}
-
+	
+	for (auto Node : GraphNodes)
+	{
+		TArray<UGraphNodeComponent*> AdjacentNodes = GetAdjacentNodes(Node);
+		Node->SetAdjacentNodes(AdjacentNodes);
+	}
 	
 }
-
 

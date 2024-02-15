@@ -8,4 +8,11 @@ UCLASS()
 class AI2_API UGraphNodeComponent : public UStaticMeshComponent
 {
 	GENERATED_BODY()
+
+	//UPROPERTY(VisibleAnywhere)
+	TArray<UGraphNodeComponent*> AdjacentNodes;
+
+public:
+
+	void SetAdjacentNodes(const TArray<UGraphNodeComponent*>& InAdjacentNodes){ AdjacentNodes = InAdjacentNodes; };
 };
