@@ -14,6 +14,7 @@ class IAIMovementInterface
 {
 	GENERATED_BODY()
 
+	
 public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Movement")

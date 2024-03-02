@@ -15,4 +15,7 @@ class AI2_API UGraphNodeComponent : public UStaticMeshComponent
 public:
 
 	void SetAdjacentNodes(const TArray<UGraphNodeComponent*>& InAdjacentNodes){ AdjacentNodes = InAdjacentNodes; };
+
+	const TArray<UGraphNodeComponent*>& GetAdjacentNodes() const { return AdjacentNodes; }
+
 };

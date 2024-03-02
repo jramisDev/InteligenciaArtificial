@@ -1,11 +1,18 @@
 ﻿#include "AI/AIControllerBase.h"
 
 #include "AI/NPCBase.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "GameFramework/PlayerStart.h"
+#include "Kismet/GameplayStatics.h"
 #include "Navigation/PathFollowingComponent.h"
 
 AAIControllerBase::AAIControllerBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	BrainComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehavioirTreeComponent"));
+	Blackboard = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackBaordComponent"));
 	
 }
 
@@ -56,6 +63,31 @@ void AAIControllerBase::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
+	if (ANPCBase* NPC = Cast<ANPCBase>(InPawn))
+	{
+		if(UBlackboardData* BlackboardData = NPC->GetDefaultBlackboard())
+		{
+			Blackboard->InitializeBlackboard(*BlackboardData);
+		}
+		
+		if(UBehaviorTree* BT = NPC->GetDefaultBehavior())
+		{
+			RunBehaviorTree(BT);
+		}
+
+		//Blackboard->SetValueAsObject(GET_MEMBER_NAME_CHECKED(ANPCBase, PatrolPointOrigin), NPC->PatrolPointOrigin);
+		//Blackboard->SetValueAsObject(GET_MEMBER_NAME_CHECKED(ANPCBase, PatrolPointDestiny), NPC->PatrolPointDestiny);
+
+		Blackboard->SetValueAsObject(TEXT("PatrolLocation1"), NPC->PatrolPointOrigin);
+		Blackboard->SetValueAsObject(TEXT("PatrolLocation2"), NPC->PatrolPointDestiny);
+	}
+
+	if(AActor* Ref = UGameplayStatics::GetActorOfClass(this, APlayerStart::StaticClass()))
+	{
+		Blackboard->SetValueAsVector(TEXT("GoalLocation"), Ref->GetActorLocation());		
+	}
+
+	
 }
 
 void AAIControllerBase::OnUnPossess()
