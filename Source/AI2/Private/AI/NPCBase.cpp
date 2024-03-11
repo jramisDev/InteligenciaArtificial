@@ -1,7 +1,7 @@
 ﻿#include "AI/NPCBase.h"
 
-#include "NiagaraComponent.h"
 #include "AI/AIControllerBase.h"
+#include "AI/PatrolComponent.h"
 
 ANPCBase::ANPCBase()
 {
@@ -10,9 +10,8 @@ ANPCBase::ANPCBase()
 	AIControllerClass = AAIControllerBase::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	// NiagaraNPCSelected = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraSelected"));
+	PatrolComponent = CreateDefaultSubobject<UPatrolComponent>(TEXT("PatrolComponent"));
 }
-
 
 void ANPCBase::StopMovement_Implementation()
 {
@@ -28,4 +27,18 @@ void ANPCBase::ResumeMovement_Implementation()
 	{
 		IAIMovementInterface::Execute_ResumeMovement(GetController());
 	}
+}
+
+void ANPCBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// if(PatrolComponentClass)
+	// {
+	// 	PatrolComponent = NewObject<UPatrolComponent>(this, PatrolComponentClass);
+	// }
+	// else
+	// {
+	// 	PatrolComponent = NewObject<UPatrolComponent>(this);
+	// }
 }

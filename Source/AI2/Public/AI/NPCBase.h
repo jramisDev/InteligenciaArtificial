@@ -5,6 +5,8 @@
 #include "GameFramework/Character.h"
 #include "NPCBase.generated.h"
 
+class URandomPatrolComponent;
+class UPatrolComponent;
 class UNiagaraSystem;
 class UNiagaraComponent;
 
@@ -18,6 +20,12 @@ class AI2_API ANPCBase : public ACharacter, public IAIMovementInterface
 	
 	UPROPERTY(EditDefaultsOnly, Category = "AIData", meta=(AllowPrivateAccess = true))
 	UBlackboardData* BlackboardData;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AIData", meta=(AllowPrivateAccess = true))
+	UPatrolComponent* PatrolComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIData", meta=(AllowPrivateAccess = true))
+	TSubclassOf<UPatrolComponent> PatrolComponentClass;
 	
 public:
 	
@@ -32,13 +40,18 @@ public:
 	UPROPERTY(EditAnywhere, Category = "AIData", meta=(AllowPrivateAccess = true))
 	AActor* PatrolPointDestiny;
 
-	UPROPERTY(EditAnywhere, Category = "AIData", meta=(AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIData", meta=(AllowPrivateAccess = true))
 	TArray<AActor*> ArrayPatrolPoints;
 
 	UBehaviorTree* GetDefaultBehavior() const { return BehaviorTreeAsset; }
 	UBlackboardData* GetDefaultBlackboard() const { return BlackboardData; }
 	
-public:
 	virtual void StopMovement_Implementation() override;
 	virtual void ResumeMovement_Implementation() override;
+
+protected:
+
+	virtual void BeginPlay() override;
+
+	
 };
