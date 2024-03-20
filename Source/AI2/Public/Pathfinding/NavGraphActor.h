@@ -40,6 +40,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Graph")
 	TArray<FVector2D> SelectedCellIndexes;
+	
+	UPROPERTY(EditAnywhere, Category="Graph")
+	TArray<FVector2D> BlockedCellIndexes;
 
 	UPROPERTY(EditAnywhere, Category="Graph")
 	bool bRunConstruction = false;
@@ -47,7 +50,6 @@ public:
 	// Navigations settings
 	UPROPERTY(EditAnywhere, Category="Graph | Pathfinding") FVector2D StartNodeCoordinates;
 	UPROPERTY(EditAnywhere, Category="Graph | Pathfinding") FVector2D EndNodeCoordinates;
-	UPROPERTY(EditAnywhere, Category="Graph | Pathfinding") TArray<FVector2D> BlockedCellIndexes;
 	
 	FORCEINLINE void GetGraphNodes(TArray<UGraphNodeComponent*>& Nodes) const { Nodes = GraphNodes; }
 

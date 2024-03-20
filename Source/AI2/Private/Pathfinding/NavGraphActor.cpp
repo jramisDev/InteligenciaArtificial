@@ -1,6 +1,5 @@
 ﻿#include "Pathfinding/NavGraphActor.h"
 
-#include "VectorUtil.h"
 #include "Pathfinding/AlgoPathfinding.h"
 #include "Pathfinding/GraphNodeComponent.h"
 
@@ -17,6 +16,8 @@ void ANavGraphActor::OnConstruction(const FTransform& Transform)
 	Super::OnConstruction(Transform);
 
 	if(!bRunConstruction) return;
+
+	BlockedCellIndexes = {{1,4},{2,4}};
 
 	for (auto GraphNode: GraphNodes)
 	{
@@ -43,16 +44,14 @@ void ANavGraphActor::OnConstruction(const FTransform& Transform)
 			if(Visualizer) {
 				Node->SetStaticMesh(Visualizer);
 
-				if (Cell_SelectedState &&
-					SelectedCellIndexes.Contains(FVector2D{static_cast<double>(i),static_cast<double>(j)}))
+				if (Cell_SelectedState && SelectedCellIndexes.Contains(FVector2D{static_cast<double>(i),static_cast<double>(j)}))
 				{
 					Node->SetMaterial(0,Cell_SelectedState);
 				}
-				if (Cell_Blocked &&
-					BlockedCellIndexes.Contains(FVector2D{static_cast<double>(i),static_cast<double>(j)}))
+				
+				if (Cell_Blocked && BlockedCellIndexes.Contains(FVector2D{static_cast<double>(i),static_cast<double>(j)}))
 				{
 					Node->SetMaterial(0,Cell_Blocked);
-					continue;
 				}
 			}
 
@@ -73,7 +72,9 @@ void ANavGraphActor::RunPathindingQuery()
 	ResetNodeStates();
 	
 	TArray<UGraphNodeComponent*> OutPath;
-	UAlgoPathfinding::Djikstra(this, OutPath);
+	
+	//UAlgoPathfinding::Djikstra(this, OutPath);
+	UAlgoPathfinding::AStar(this,OutPath);
 	
 	for (auto Node : OutPath)
 	{		
