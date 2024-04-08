@@ -11,17 +11,17 @@ class AI2_API ATestSteeringCharacter : public ACharacter
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(Transient)
+	UPROPERTY(VisibleAnywhere, Instanced, meta=(ShowOnlyInnerProperties=true))
 	USteeringCustom* CurrentSteeringBehavior;
 
 	UPROPERTY(EditAnywhere, Category = "Steering Behaviors", meta=(AllowPrivateAccess=true))
 	TSubclassOf<USteeringCustom> InitialSteeringClass;
 
+	UPROPERTY(EditAnywhere, Category = "Steering Behaviors", meta=(AllowPrivateAccess=true))
+	AActor* TargetActor;
+	
 public:
 	ATestSteeringCharacter();
-
-	UPROPERTY(EditAnywhere)
-	AActor* ReferenceDestination;
 
 protected:
 	virtual void BeginPlay() override;

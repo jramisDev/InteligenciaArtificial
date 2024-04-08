@@ -7,7 +7,11 @@ void USteeringCustom::TicketSteering(float DeltaSeconds)
 {
 	FVector NewVelocity = GetSteering() * DeltaSeconds + GetCurrentVelocity();
 
-	SetActualVelocity(NewVelocity * DeltaSeconds);
+#if WITH_EDITOR
+	DrawDebugMovementComponents(DeltaSeconds);
+#endif
+	
+	SetActualVelocity(NewVelocity);
 }
 
 FVector USteeringCustom::GetDesiredVelocity_Implementation() const
@@ -20,13 +24,17 @@ FVector USteeringCustom::GetSteering_Implementation() const
 	return FVector::ZeroVector;
 }
 
+FVector USteeringCustom::GetDestination_Implementation() const
+{
+	return FVector::ZeroVector;
+}
+
 void USteeringCustom::SetActualVelocity(const FVector& InVelocity) const
 {
 	if(UCharacterMovementComponent* Movement = GetMovementComponent())
 	{
+		Movement->ClearAccumulatedForces();
 		Movement->Velocity = InVelocity;
-
-		Movement->AddInputVector(InVelocity);
 	}
 }
 
@@ -71,12 +79,18 @@ void USteeringCustom::DrawDebugMovementComponents(float DeltaSeconds)
 {
 	if(Character)
 	{
-		//Steering acceleration
-		//DrawDirectionalArrow(Character->GetWorld(), Character->GetActorLocation(), GetSteering() - Character->GetActorLocation(), 5.f, FColor::Red);
-		//Desired velocity
-		//DrawDirectionalArrow();
+		//Actual position
+		DrawDebugPoint(Character->GetWorld(), Character->GetActorLocation(), 5000.f, FColor::Red, false, 5.f);
+		DrawDebugPoint(Character->GetWorld(), GetDestination(), 20000.f, FColor::Orange);
+		
 		//Current velocity
-		//DrawDirectionalArrow();
+		DrawDebugDirectionalArrow(Character->GetWorld(), Character->GetActorLocation(), Character->GetActorLocation() + GetCurrentVelocity(), 200.f, FColor::Red);
+		
+		//Steering force
+		DrawDebugDirectionalArrow(Character->GetWorld(), Character->GetActorLocation(), Character->GetActorLocation() + GetSteering(), 200.f, FColor::Blue);
+		
+		//Desired velocity
+		DrawDebugDirectionalArrow(Character->GetWorld(), Character->GetActorLocation(), Character->GetActorLocation() + GetDesiredVelocity(), 200.f, FColor::Green);
 	}	
 }
 #endif

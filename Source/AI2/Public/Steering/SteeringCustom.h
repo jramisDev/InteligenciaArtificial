@@ -12,18 +12,18 @@ class AI2_API USteeringCustom : public UObject
 	GENERATED_BODY()
 	
 protected:
-	UPROPERTY(Transient)
-	ACharacter* Character;
-
-	UPROPERTY(Transient)
-	FVector Destination;
+	
+	UPROPERTY(Transient) ACharacter* Character;
+	// UPROPERTY(Transient) FVector Destination;
+	UPROPERTY(Transient) AActor* Target;	
 
 public:
 
 	void TicketSteering(float DeltaSeconds);
 	
 	void SetAgent(ACharacter* InAgent) {Character = InAgent; }
-	void SetDestination(const FVector& InDestination) {Destination = InDestination; }
+	// void SetDestination(const FVector& InDestination) {Destination = InDestination; }
+	void SetTarget(AActor* InTarget) { Target = InTarget; }
 
 protected:
 
@@ -33,6 +33,9 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "SteeringBehaviors")
 	FVector GetSteering() const;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "SteeringBehaviors")
+	FVector GetDestination() const;
+	
 	void SetActualVelocity(const FVector& InVelocity) const;
 
 	FORCEINLINE UCharacterMovementComponent* GetMovementComponent() const;
@@ -41,7 +44,7 @@ protected:
 	FORCEINLINE float GetMaxAcceleration() const;
 
 #if WITH_EDITOR
-	void DrawDebugMovementComponents(float DeltaSeconds);
+	virtual void DrawDebugMovementComponents(float DeltaSeconds) ;
 #endif
 	
 

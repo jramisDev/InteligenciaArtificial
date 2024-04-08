@@ -1,6 +1,7 @@
 ﻿#include "Steering/TestSteeringCharacter.h"
 
 #include "AI/AIControllerBase.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Steering/SteeringCustom.h"
 
 
@@ -17,15 +18,16 @@ void ATestSteeringCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetCharacterMovement()->Velocity = GetActorForwardVector() * GetCharacterMovement()->GetMaxSpeed();
+
 	CurrentSteeringBehavior = NewObject<USteeringCustom>(this, InitialSteeringClass);
 
 	if(CurrentSteeringBehavior && ReferenceDestination)
 	{
 		CurrentSteeringBehavior->SetAgent(this);
-		CurrentSteeringBehavior->SetDestination(ReferenceDestination->GetActorLocation());
+		// CurrentSteeringBehavior->SetDestination(ReferenceDestination->GetActorLocation());
+		CurrentSteeringBehavior->SetTarget(Target);
 	}
-
-	AddMovementInput(FVector::ForwardVector * 100.f);
 	
 }
 
