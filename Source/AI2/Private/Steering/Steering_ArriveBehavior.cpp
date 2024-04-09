@@ -2,16 +2,24 @@
 
 #include "GameFramework/Character.h"
 
-FVector USteering_ArriveBehavior::GetDesiredVelocity_Implementation() const
+FVector USteering_ArriveBehavior::GetDesiredVelocity_Implementation(float DeltaSeconds) const
 {
+	FVector CurrentDesiredVelocity = Super::GetDesiredVelocity_Implementation(DeltaSeconds); 
 
-	FVector CurrentDesiredVelocity = Super::GetDesiredVelocity_Implementation();
-
-	const float Distance = FVector::Distance(Character->GetActorLocation(), GetDestination());
-	
+	const float Distance = FVector::Distance(Character->GetActorLocation(), GetDestination(DeltaSeconds)); 
 	if(Distance < DistanceThreshold)
 	{
-		CurrentDesiredVelocity *= Distance / DistanceThreshold;
+		float AttenuationCoeff = 1.f;
+		if(Attenuation)
+		{
+			AttenuationCoeff = Attenuation->GetFloatValue(Distance / DistanceThreshold);
+		}
+		else
+		{
+			AttenuationCoeff = Distance / DistanceThreshold;
+		}
+		
+		CurrentDesiredVelocity *= AttenuationCoeff; 
 	}
 	
 	return CurrentDesiredVelocity;

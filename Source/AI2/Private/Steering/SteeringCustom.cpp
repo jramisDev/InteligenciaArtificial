@@ -5,7 +5,7 @@
 
 void USteeringCustom::TicketSteering(float DeltaSeconds)
 {
-	FVector NewVelocity = GetSteering() * DeltaSeconds + GetCurrentVelocity();
+	FVector NewVelocity = GetSteering(DeltaSeconds) * DeltaSeconds + GetCurrentVelocity();
 
 #if WITH_EDITOR
 	DrawDebugMovementComponents(DeltaSeconds);
@@ -14,17 +14,17 @@ void USteeringCustom::TicketSteering(float DeltaSeconds)
 	SetActualVelocity(NewVelocity);
 }
 
-FVector USteeringCustom::GetDesiredVelocity_Implementation() const
+FVector USteeringCustom::GetDesiredVelocity_Implementation(float DeltaSeconds) const
 {
 	return FVector::ZeroVector;
 }
 
-FVector USteeringCustom::GetSteering_Implementation() const
+FVector USteeringCustom::GetSteering_Implementation(float DeltaSeconds) const
 {
 	return FVector::ZeroVector;
 }
 
-FVector USteeringCustom::GetDestination_Implementation() const
+FVector USteeringCustom::GetDestination_Implementation(float DeltaSeconds) const
 {
 	return FVector::ZeroVector;
 }
@@ -81,16 +81,16 @@ void USteeringCustom::DrawDebugMovementComponents(float DeltaSeconds)
 	{
 		//Actual position
 		DrawDebugPoint(Character->GetWorld(), Character->GetActorLocation(), 5000.f, FColor::Red, false, 5.f);
-		DrawDebugPoint(Character->GetWorld(), GetDestination(), 20000.f, FColor::Orange);
+		DrawDebugPoint(Character->GetWorld(), GetDestination(DeltaSeconds), 20000.f, FColor::Orange);
 		
 		//Current velocity
 		DrawDebugDirectionalArrow(Character->GetWorld(), Character->GetActorLocation(), Character->GetActorLocation() + GetCurrentVelocity(), 200.f, FColor::Red);
 		
 		//Steering force
-		DrawDebugDirectionalArrow(Character->GetWorld(), Character->GetActorLocation(), Character->GetActorLocation() + GetSteering(), 200.f, FColor::Blue);
+		DrawDebugDirectionalArrow(Character->GetWorld(), Character->GetActorLocation(), Character->GetActorLocation() + GetSteering(DeltaSeconds), 200.f, FColor::Blue);
 		
 		//Desired velocity
-		DrawDebugDirectionalArrow(Character->GetWorld(), Character->GetActorLocation(), Character->GetActorLocation() + GetDesiredVelocity(), 200.f, FColor::Green);
+		DrawDebugDirectionalArrow(Character->GetWorld(), Character->GetActorLocation(), Character->GetActorLocation() + GetDesiredVelocity(DeltaSeconds), 200.f, FColor::Green);
 	}	
 }
 #endif

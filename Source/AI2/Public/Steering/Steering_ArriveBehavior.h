@@ -12,8 +12,11 @@ class AI2_API USteering_ArriveBehavior : public USteering_SeekBehavior
 	UPROPERTY(EditAnywhere)
 	float DistanceThreshold = 300.f;
 
+	UPROPERTY(EditAnywhere)
+	UCurveFloat* Attenuation;
+
 protected:
-	virtual FVector GetDesiredVelocity_Implementation() const override;
+	virtual FVector GetDesiredVelocity_Implementation(float DeltaSeconds) const override;
 
 	virtual void DrawDebugMovementComponents(float DeltaSeconds) override;
 };

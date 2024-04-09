@@ -22,11 +22,11 @@ void ATestSteeringCharacter::BeginPlay()
 
 	CurrentSteeringBehavior = NewObject<USteeringCustom>(this, InitialSteeringClass);
 
-	if(CurrentSteeringBehavior && ReferenceDestination)
+	if(CurrentSteeringBehavior && TargetActor)
 	{
 		CurrentSteeringBehavior->SetAgent(this);
 		// CurrentSteeringBehavior->SetDestination(ReferenceDestination->GetActorLocation());
-		CurrentSteeringBehavior->SetTarget(Target);
+		CurrentSteeringBehavior->SetTarget(TargetActor);
 	}
 	
 }

@@ -28,13 +28,13 @@ public:
 protected:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "SteeringBehaviors")
-	FVector GetDesiredVelocity() const;
+	FVector GetDesiredVelocity(float DeltaSeconds) const;
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "SteeringBehaviors")
-	FVector GetSteering() const;
+	FVector GetSteering(float DeltaSeconds) const;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "SteeringBehaviors")
-	FVector GetDestination() const;
+	FVector GetDestination(float DeltaSeconds) const;
 	
 	void SetActualVelocity(const FVector& InVelocity) const;
 

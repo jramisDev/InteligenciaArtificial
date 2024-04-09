@@ -12,7 +12,7 @@ class AI2_API USteering_SeekBehavior : public USteeringCustom
 
 protected:
 
-	virtual FVector GetDesiredVelocity_Implementation() const override;
-	virtual FVector GetSteering_Implementation() const override;
-	virtual FVector GetDestination_Implementation() const override;
+	virtual FVector GetDesiredVelocity_Implementation(float DeltaSeconds) const override;
+	virtual FVector GetSteering_Implementation(float DeltaSeconds) const override;
+	virtual FVector GetDestination_Implementation(float DeltaSeconds) const override;
 };

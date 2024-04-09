@@ -10,5 +10,5 @@ class AI2_API USteering_FleeBehavior : public USteering_SeekBehavior
 	GENERATED_BODY()
 
 protected:
-	virtual FVector GetDesiredVelocity_Implementation() const override;
+	virtual FVector GetDesiredVelocity_Implementation(float DeltaSeconds) const override;
 };
