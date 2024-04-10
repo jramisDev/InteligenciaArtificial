@@ -12,6 +12,8 @@ void USteeringCustom::TicketSteering(float DeltaSeconds)
 #endif
 	
 	SetActualVelocity(NewVelocity);
+
+	Character->SetActorRotation(NewVelocity.Rotation());
 }
 
 FVector USteeringCustom::GetDesiredVelocity_Implementation(float DeltaSeconds) const

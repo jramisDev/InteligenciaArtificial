@@ -4,17 +4,19 @@
 #include "UObject/Object.h"
 #include "SteeringCustom.generated.h"
 
+class USteering_BlendBehavior;
 class UCharacterMovementComponent;
 
 UCLASS()
 class AI2_API USteeringCustom : public UObject
 {
 	GENERATED_BODY()
+
+	friend USteering_BlendBehavior;
 	
 protected:
 	
 	UPROPERTY(Transient) ACharacter* Character;
-	// UPROPERTY(Transient) FVector Destination;
 	UPROPERTY(Transient) AActor* Target;	
 
 public:
@@ -22,7 +24,7 @@ public:
 	void TicketSteering(float DeltaSeconds);
 	
 	void SetAgent(ACharacter* InAgent) {Character = InAgent; }
-	// void SetDestination(const FVector& InDestination) {Destination = InDestination; }
+	
 	void SetTarget(AActor* InTarget) { Target = InTarget; }
 
 protected:

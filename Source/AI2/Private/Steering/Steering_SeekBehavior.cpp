@@ -1,5 +1,6 @@
 ﻿#include "Steering/Steering_SeekBehavior.h"
 
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
 
 FVector USteering_SeekBehavior::GetDesiredVelocity_Implementation(float DeltaSeconds) const
@@ -25,5 +26,9 @@ FVector USteering_SeekBehavior::GetSteering_Implementation(float DeltaSeconds) c
 
 FVector USteering_SeekBehavior::GetDestination_Implementation(float DeltaSeconds) const
 {
-	return Target->GetActorLocation();
+	FVector Destination = Target->GetActorLocation();
+	//Destination.Z = Character->GetActorLocation().Z + Character->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	Destination.Z = Character->GetActorLocation().Z;
+	
+	return Destination;
 }
