@@ -11,7 +11,7 @@ class AI2_API ATestSteeringCharacter : public ACharacter
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(VisibleAnywhere, Instanced, meta=(ShowOnlyInnerProperties=true))
+	UPROPERTY(VisibleAnywhere, Category = "Test Steering Character", Instanced, meta=(ShowOnlyInnerProperties=true))
 	USteeringCustom* CurrentSteeringBehavior;
 
 	UPROPERTY(EditAnywhere, Category = "Steering Behaviors", meta=(AllowPrivateAccess=true))
@@ -26,8 +26,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+#if WITH_EDITOR
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif
+	
 public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 };

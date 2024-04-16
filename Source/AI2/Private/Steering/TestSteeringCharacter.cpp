@@ -20,29 +20,41 @@ void ATestSteeringCharacter::BeginPlay()
 
 	GetCharacterMovement()->Velocity = GetActorForwardVector() * GetCharacterMovement()->GetMaxSpeed();
 
-	CurrentSteeringBehavior = NewObject<USteeringCustom>(this, InitialSteeringClass);
-
 	if(CurrentSteeringBehavior && TargetActor)
 	{
-		CurrentSteeringBehavior->SetAgent(this);
-		// CurrentSteeringBehavior->SetDestination(ReferenceDestination->GetActorLocation());
-		CurrentSteeringBehavior->SetTarget(TargetActor);
+		CurrentSteeringBehavior->Init(this, TargetActor);
 	}
 	
 }
 
+#if WITH_EDITOR
+void ATestSteeringCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	if(PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(ATestSteeringCharacter, InitialSteeringClass))
+	{
+		if(CurrentSteeringBehavior)
+		{
+			CurrentSteeringBehavior->MarkAsGarbage();
+		}
+	}
+	if(InitialSteeringClass)
+	{
+		CurrentSteeringBehavior = NewObject<USteeringCustom>(this, InitialSteeringClass);
+	}
+	
+}
+#endif
+
 void ATestSteeringCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if(CurrentSteeringBehavior)
-	{
-		CurrentSteeringBehavior->TicketSteering(DeltaTime);
-	}
 }
 
 void ATestSteeringCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
 }
 

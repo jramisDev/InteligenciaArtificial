@@ -8,11 +8,13 @@ class USteering_BlendBehavior;
 class UCharacterMovementComponent;
 
 UCLASS()
-class AI2_API USteeringCustom : public UObject
+class AI2_API USteeringCustom : public UObject, public FTickableGameObject
 {
 	GENERATED_BODY()
 
 	friend USteering_BlendBehavior;
+
+	bool bIsInitialized = false;
 	
 protected:
 	
@@ -20,8 +22,10 @@ protected:
 	UPROPERTY(Transient) AActor* Target;	
 
 public:
+	
+	void TickSteering(float DeltaSeconds);
 
-	void TicketSteering(float DeltaSeconds);
+	virtual void Init(ACharacter* InCharacter, AActor* InTarget);
 	
 	void SetAgent(ACharacter* InAgent) {Character = InAgent; }
 	
@@ -29,6 +33,10 @@ public:
 
 protected:
 
+	virtual void Tick(float DeltaTime) override;
+
+	virtual TStatId GetStatId() const override;
+	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "SteeringBehaviors")
 	FVector GetDesiredVelocity(float DeltaSeconds) const;
 	

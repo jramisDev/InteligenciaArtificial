@@ -3,7 +3,27 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-void USteeringCustom::TicketSteering(float DeltaSeconds)
+void USteeringCustom::Tick(float DeltaTime)
+{
+	if(bIsInitialized)
+	{
+		TickSteering(DeltaTime);
+	} 
+}
+
+TStatId USteeringCustom::GetStatId() const
+{
+	return TStatId();
+}
+
+void USteeringCustom::Init(ACharacter* InCharacter, AActor* InTarget)
+{
+	SetAgent(InCharacter);
+	SetTarget(InTarget);
+	bIsInitialized = true;	
+}
+
+void USteeringCustom::TickSteering(float DeltaSeconds)
 {
 	FVector NewVelocity = GetSteering(DeltaSeconds) * DeltaSeconds + GetCurrentVelocity();
 
