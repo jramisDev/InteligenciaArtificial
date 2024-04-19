@@ -10,7 +10,7 @@ ANPCBase::ANPCBase()
 	AIControllerClass = AAIControllerBase::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	PatrolComponent = CreateDefaultSubobject<UPatrolComponent>(TEXT("PatrolComponent"));
+	//PatrolComponent = CreateDefaultSubobject<UPatrolComponent>(TEXT("PatrolComponent"));
 }
 
 void ANPCBase::StopMovement_Implementation()

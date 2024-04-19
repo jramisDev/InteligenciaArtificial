@@ -21,8 +21,8 @@ class AI2_API ANPCBase : public ACharacter, public IAIMovementInterface
 	UPROPERTY(EditDefaultsOnly, Category = "AIData", meta=(AllowPrivateAccess = true))
 	UBlackboardData* BlackboardData;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AIData", meta=(AllowPrivateAccess = true))
-	UPatrolComponent* PatrolComponent;
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AIData", meta=(AllowPrivateAccess = true))
+	//UPatrolComponent* PatrolComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIData", meta=(AllowPrivateAccess = true))
 	TSubclassOf<UPatrolComponent> PatrolComponentClass;

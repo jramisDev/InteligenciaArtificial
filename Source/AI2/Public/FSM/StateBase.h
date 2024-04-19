@@ -22,10 +22,10 @@ class AI2_API UStateBase : public UObject
 
 	friend UFSMComponent;
 
-	UPROPERTY(VisibleAnywhere)
-	AActor* StateOwner;
-	
 protected:
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	AActor* StateOwner;
 
 	UFUNCTION(BlueprintNativeEvent)
 	void InitState(AActor* InSourceActor);
@@ -35,5 +35,8 @@ protected:
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void FinishState(EFinishStateReason InFinishedReason);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void GetStateDebugInfo(FString& OutInfo);
 	
 };

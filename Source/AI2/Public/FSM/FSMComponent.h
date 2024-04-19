@@ -21,15 +21,20 @@ class AI2_API UFSMComponent : public UActorComponent
 	
 
 protected:
+	UFSMComponent();
+	
 	virtual void BeginPlay() override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	void SetNewState(TSubclassOf<UStateBase> InNextSate);
+
+#if WITH_EDITOR
+	virtual void ShowDebugStateMachine(float DeltaTime) const;
+#endif
 
 public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetNextSate(TSubclassOf<UStateBase> InNextSate);
-	
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
 

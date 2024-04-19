@@ -16,6 +16,6 @@ class AI2_API UTransitionBase : public UObject
 protected:
 
 	UFUNCTION(BlueprintNativeEvent)
-	bool CheckCondition(AActor* SourceConditionActor);
+	bool CheckCondition(AActor* SourceConditionActor) const;
 	
 };

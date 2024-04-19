@@ -14,3 +14,8 @@ void UStateBase::TickState_Implementation(float DeltaSeconds)
 void UStateBase::FinishState_Implementation(EFinishStateReason InFinishedReason)
 {
 }
+
+void UStateBase::GetStateDebugInfo_Implementation(FString& OutInfo)
+{
+	
+}
