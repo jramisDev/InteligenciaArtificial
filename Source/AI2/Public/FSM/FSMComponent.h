@@ -5,6 +5,7 @@
 #include "FSMComponent.generated.h"
 
 
+class UBlackboardFSM;
 class UStateBase;
 class UFSMBaseAsset;
 
@@ -17,8 +18,7 @@ class AI2_API UFSMComponent : public UActorComponent
 	UStateBase* ActiveState;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
-	UFSMBaseAsset* ActiveFSM;
-	
+	UFSMBaseAsset* ActiveFSM;	
 
 protected:
 	UFSMComponent();
@@ -32,6 +32,9 @@ protected:
 #endif
 
 public:
+
+	UPROPERTY(VisibleAnywhere)
+	UBlackboardFSM* BlackboardFsm;
 
 	UFUNCTION(BlueprintCallable)
 	void SetNextSate(TSubclassOf<UStateBase> InNextSate);

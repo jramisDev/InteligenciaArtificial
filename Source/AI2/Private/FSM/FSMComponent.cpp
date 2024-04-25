@@ -1,13 +1,17 @@
 ﻿#include "FSM/FSMComponent.h"
 
-#include "AudioDevice.h"
+#include "FSM/BlackboardFSM.h"
 #include "FSM/FSMBaseAsset.h"
 #include "FSM/StateBase.h"
 #include "FSM/TransitionBase.h"
+#include "Kismet/GameplayStatics.h"
 
 UFSMComponent::UFSMComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+
+	BlackboardFsm = CreateDefaultSubobject<UBlackboardFSM>(TEXT("Blackboard"));
+	
 }
 
 void UFSMComponent::BeginPlay()
@@ -18,6 +22,8 @@ void UFSMComponent::BeginPlay()
 	{
 		SetNewState(ActiveFSM->InitialState);
 	}
+	
+	BlackboardFsm->SetValuesInMap_Actor(TEXT("Player"), UGameplayStatics::GetPlayerPawn(this, 0));
 }
 
 void UFSMComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

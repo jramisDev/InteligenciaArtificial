@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "Net/Core/PushModel/PushModel.h"
 #include "FSMBaseAsset.generated.h"
 
 class UTransitionBase;
@@ -20,7 +21,7 @@ struct FTransitionCollection
 USTRUCT(BlueprintType)
 struct FStateConditionEvalExpr
 {
-	GENERATED_BODY()
+	GENERATED_BODY()	
 
 	UPROPERTY(EditAnywhere)
 	TMap<TSubclassOf<UStateBase>, FTransitionCollection> AvailableStates;
